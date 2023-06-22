@@ -8,7 +8,7 @@ router.post("/", async (req, res) => {
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const { first_name, last_name, email, phone } = req.body;
+  const { firstName, lastName, email, phone } = req.body;
 
   //  check if user exist
   let user = await User.findOne({ email: email });
@@ -27,8 +27,8 @@ router.post("/", async (req, res) => {
 
   //  create new user and
   user = new User({
-    first_name,
-    last_name,
+    firstName,
+    lastName,
     email,
     phone,
     password,
