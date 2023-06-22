@@ -28,6 +28,7 @@ mongoose
 app.use("/api/signup", require("./routes/signUp"));
 app.use("/api/message", require("./routes/message"));
 app.use("/api/signin", require("./routes/signIn"));
+app.use("/api/auth", require("./routes/auth"));
 
 // Home route
 app.get("/", (req, res) => {
