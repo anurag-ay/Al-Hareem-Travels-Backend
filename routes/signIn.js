@@ -15,13 +15,12 @@ router.post("/", async (req, res) => {
   if (!user) return res.status(404).send("User with given email Not Found");
 
   // check the password
-  console.log(password, user.password);
   const isValidPassword = await bcrypt.compare(password, user.password);
   if (!isValidPassword) return res.status(401).send("Incorrect Password");
 
-  const { first_name, last_name, phone } = user;
+  const { firstName, lastName, phone } = user;
   const token = jwt.sign(
-    { first_name, last_name, phone, email },
+    { firstName, lastName, phone, email },
     process.env.jwt_secret_key
   );
 
@@ -30,8 +29,16 @@ router.post("/", async (req, res) => {
 
 function validate(auth) {
   const schema = Joi.object({
-    email: Joi.string().email().min(2).max(255).required(),
-    password: Joi.string().min(2).max(255).required(),
+    email: Joi.string().email().required().messages({
+      "string.base": "Email must be a string",
+      "string.empty": "Email is required",
+      "string.email": "Invalid email format",
+    }),
+
+    password: Joi.string().required().messages({
+      "string.base": "Password must be a string",
+      "string.empty": "Password is required",
+    }),
   });
   return schema.validate(auth);
 }
